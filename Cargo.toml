@@ -1,0 +1,17 @@
+[package]
+name = "audio-codec-algorithms"
+version = "0.5.2"
+description = "Audio codec algorithms: A-law and μ-law"
+repository = "https://github.com/karip/audio-codec-algorithms"
+license = "CC0-1.0"
+keywords = ["audio", "A-law", "u-law"]
+edition = "2021"
+
+[dependencies]
+
+[dev-dependencies]
+criterion = { version = "0.5.1" }
+
+[[bench]]
+name = "codec_benchmark"
+harness = false
