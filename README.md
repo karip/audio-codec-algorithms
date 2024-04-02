@@ -3,7 +3,7 @@
 
 [![Cross-platform tests](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml/badge.svg)](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml)
 
-Simple audio codecs implemented in Rust. Supported codecs are:
+Audio decoding and encoding for few basic codecs implemented in Rust. Supported codecs are:
 
  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
  - [G.711 μ-law](https://en.wikipedia.org/wiki/G.711#μ-law)
@@ -18,10 +18,9 @@ Features:
 
 ## Running the example
 
-Try out decoding and encoding:
+Try out decoding and encoding values:
 
     cargo run --example codec-tester decode ulaw 3 130 221
-
     cargo run --example codec-tester encode alaw 10 -5430 3263
 
 ## Running tests
@@ -31,7 +30,7 @@ Run:
     cargo test
     cargo clippy
 
-Performance testing (requires Rust nightly):
+Performance testing:
 
     cargo bench
 
