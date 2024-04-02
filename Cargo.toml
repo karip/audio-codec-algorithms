@@ -5,6 +5,7 @@ description = "Audio codec algorithms: A-law and μ-law"
 repository = "https://github.com/karip/audio-codec-algorithms"
 license = "CC0-1.0"
 keywords = ["audio", "A-law", "u-law"]
+categories = ["multimedia::audio", "multimedia::encoding", "no-std", "no-std::no-alloc"]
 edition = "2021"
 
 [dependencies]
