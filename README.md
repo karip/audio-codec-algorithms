@@ -14,7 +14,7 @@ Features:
  - no heap memory allocations
  - no unsafe code
  - no panicking
- - no dependencies (except dev-dependency to criterion for benchmarking)
+ - only dependencies for testing: no-panic and criterion
 
 ## Running the example
 
@@ -27,8 +27,12 @@ Try out decoding and encoding values:
 
 Run:
 
+    # run the tests
     cargo test
+    # ensure good code quality
     cargo clippy
+    # ensure that the release build never panics
+    cargo test --release --features internal-no-panic
 
 Performance testing:
 

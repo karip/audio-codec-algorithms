@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: CC0-1.0
 
+#[cfg(feature = "internal-no-panic")]
+use no_panic::no_panic;
+
 // decoding table generated using G.191 softare tools at https://www.itu.int/rec/T-REC-G.191/en
-const ALAW_VALUES: [i16; 256] = [
+const ALAW_VALUES: &[i16; 256] = &[
     -5504, -5248, -6016, -5760, -4480, -4224, -4992, -4736,
     -7552, -7296, -8064, -7808, -6528, -6272, -7040, -6784,
     -2752, -2624, -3008, -2880, -2240, -2112, -2496, -2368,
@@ -37,6 +40,7 @@ const ALAW_VALUES: [i16; 256] = [
 ];
 
 /// Decodes a 8-bit encoded G.711 A-law value to a linear 16-bit signed integer sample value.
+#[cfg_attr(feature = "internal-no-panic", no_panic)]
 #[inline(always)]
 pub fn decode_alaw(encoded: u8) -> i16 {
     ALAW_VALUES[usize::from(encoded)]
@@ -47,6 +51,7 @@ pub fn decode_alaw(encoded: u8) -> i16 {
 // see also https://en.wikipedia.org/wiki/G.711#A-law
 
 /// Encodes a linear 16-bit signed integer sample value to a 8-bit encoded G.711 A-law value.
+#[cfg_attr(feature = "internal-no-panic", no_panic)]
 #[inline(always)]
 pub fn encode_alaw(linear: i16) -> u8 {
     let sign = if linear >= 0 {
