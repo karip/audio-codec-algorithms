@@ -3,7 +3,6 @@
 //!  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
 //!  - [G.711 μ-law](https://en.wikipedia.org/wiki/G.711#μ-law)
 //!
-// SPDX-License-Identifier: CC0-1.0
 
 #![no_std]
 

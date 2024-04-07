@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: CC0-1.0
 
 #[cfg(feature = "internal-no-panic")]
 use no_panic::no_panic;

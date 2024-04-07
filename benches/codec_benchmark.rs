@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: CC0-1.0
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
