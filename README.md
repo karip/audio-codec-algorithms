@@ -3,7 +3,7 @@
 
 [![Cross-platform tests](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml/badge.svg)](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml)
 
-Audio decoding and encoding for few basic codecs implemented in Rust. Supported codecs are:
+Decoding and encoding for few basic audio codecs implemented in Rust:
 
  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
  - [G.711 μ-law](https://en.wikipedia.org/wiki/G.711#μ-law)
@@ -37,6 +37,9 @@ Run:
 Performance testing:
 
     cargo bench
+
+There is a GitHub Action called "Cross-platform tests" (cross-test.yml), which automatically
+runs `cargo test` for little-endian 64-bit x64_86 and big-endian 32-bit PowerPC.
 
 ## License
 
