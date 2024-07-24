@@ -7,6 +7,7 @@ Decoding and encoding for few basic audio codecs implemented in Rust:
 
  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
  - [G.711 μ-law](https://en.wikipedia.org/wiki/G.711#μ-law)
+ - [IMA ADPCM](https://en.wikipedia.org/wiki/Interactive_Multimedia_Association)
 
 Features:
 
@@ -22,6 +23,8 @@ Try out decoding and encoding values:
 
     cargo run --example codec-tester decode ulaw 3 130 221
     cargo run --example codec-tester encode alaw 10 -5430 3263
+    cargo run --example codec-tester encode adpcm_ima 25 40 60 80 100 160 220
+    cargo run --example codec-tester decode adpcm_ima 7 7 2 2 2 7 5
 
 ## Running tests
 
