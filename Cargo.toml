@@ -1,6 +1,6 @@
 [package]
 name = "audio-codec-algorithms"
-version = "0.6.0"
+version = "0.7.0"
 description = "Audio codec algorithms: A-law, μ-law and IMA ADPCM"
 repository = "https://github.com/karip/audio-codec-algorithms"
 license = "0BSD OR Apache-2.0"
