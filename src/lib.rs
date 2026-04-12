@@ -35,6 +35,9 @@ pub use alaw::{decode_alaw, encode_alaw};
 mod ulaw;
 pub use ulaw::{decode_ulaw, encode_ulaw};
 
+mod convert_laws;
+pub use convert_laws::{convert_ulaw_to_alaw, convert_alaw_to_ulaw};
+
 mod adpcm_ima;
 pub use adpcm_ima::AdpcmImaState;
 pub use adpcm_ima::{decode_adpcm_ima, decode_adpcm_ima_ima4, decode_adpcm_ima_ms};
