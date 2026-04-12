@@ -2,7 +2,7 @@
 //! This crate contains simple audio codecs. Supported codecs are:
 //!  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
 //!  - [G.711 μ-law](https://en.wikipedia.org/wiki/G.711#μ-law)
-//!  - [IMA ADPCM](https://en.wikipedia.org/wiki/Interactive_Multimedia_Association)
+//!  - [IMA ADPCM](https://en.wikipedia.org/wiki/Interactive_Multimedia_Association) (4-bit version)
 //!
 
 #![no_std]

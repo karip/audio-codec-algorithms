@@ -124,7 +124,7 @@ pub fn decode_adpcm_ima_ima4(buf: &[u8; 34], state: &mut AdpcmImaState,
     }
 }
 
-/// Decodes WAV / MS IMA ADPCM (wav format 0x0011) compressed block to
+/// Decodes 4-bit WAV / MS IMA ADPCM (wav format 0x0011) compressed block to
 /// 16-bit signed integer samples.
 ///
 /// `buf` should contain header bytes (predictor and step index) and bytes of 4-bit encoded
@@ -198,6 +198,8 @@ pub fn decode_adpcm_ima_ms(buf: &[u8], is_stereo: bool, out_samples: &mut [i16])
 }
 
 /// Encodes a linear 16-bit signed integer sample value to a 4-bit encoded IMA ADPCM value.
+///
+/// The lowest 4 bits of the returned byte contain the encoded nibble.
 ///
 /// The `state` parameter should be initialized to zero or to values from the audio stream
 /// (depending on how the format has specified it). This method updates `state`
@@ -291,7 +293,7 @@ pub fn encode_adpcm_ima_ima4(samples: &[i16; 64], state: &mut AdpcmImaState,
     }
 }
 
-/// Encodes 16-bit signed integer samples to a MS / WAV IMA ADPCM (wav format 0x0011)
+/// Encodes 16-bit signed integer samples to a 4-bit MS / WAV IMA ADPCM (wav format 0x0011)
 /// compressed block.
 ///
 /// Only 1 or 2 channel audio data is supported. For 1 channel audio, there must be an odd number
