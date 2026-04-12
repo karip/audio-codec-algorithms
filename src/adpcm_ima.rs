@@ -151,7 +151,7 @@ pub fn decode_adpcm_ima_ms(buf: &[u8], is_stereo: bool, out_samples: &mut [i16])
     };
     // check buf length
     if (channels == 1 && buf.len() < 4) ||
-        (channels == 2 && (buf.len() < 8 || buf.len() % 8 != 0)) {
+        (channels == 2 && (buf.len() < 8 || !buf.len().is_multiple_of(8))) {
         return Err(Error::InvalidBufferSize);
     }
     if buf.len() > 0xffff {
@@ -321,7 +321,7 @@ pub fn encode_adpcm_ima_ms(samples: &[i16], states: &mut [AdpcmImaState], out_bu
     }
     // check samples length
     if (channels == 1 && samples.len() & 1 == 0) ||
-        (channels == 2 && (samples.len() < 2 || (samples.len()-2) % 16 != 0)) {
+        (channels == 2 && (samples.len() < 2 || !(samples.len() - 2).is_multiple_of(16))) {
         return Err(crate::Error::InvalidBufferSize);
     }
     // check buf length
