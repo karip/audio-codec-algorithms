@@ -1,8 +1,6 @@
 
 # Audio Codec Algorithms
 
-[![Cross-platform tests](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml/badge.svg)](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml)
-
 Decoding and encoding for few basic audio codecs implemented in Rust:
 
  - [G.711 A-law](https://en.wikipedia.org/wiki/G.711#A-law)
@@ -42,7 +40,10 @@ Performance testing:
     cargo bench
 
 There is a GitHub Action called "Cross-platform tests" (cross-test.yml), which automatically
-runs `cargo test` for little-endian 64-bit x64_86 and big-endian 32-bit PowerPC.
+runs `cargo test` for little-endian 64-bit x64_86 and big-endian 32-bit PowerPC. The badge
+below shows the status if the GitHub Action has been run recently.
+
+[![Cross-platform tests](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml/badge.svg)](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml)
 
 ## License
 
