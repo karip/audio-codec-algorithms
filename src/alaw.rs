@@ -46,7 +46,11 @@ pub fn decode_alaw(encoded: u8) -> i16 {
 }
 
 // encoding algorithm is based on "A-Law and mu-Law Companding Implementations Using the TMS320C54x,
-// Application Note: SPRA163A", page 16: https://www.ti.com/lit/an/spra163a/spra163a.pdf
+// Application Note: SPRA163A", pages 18 and 23: https://www.ti.com/lit/an/spra163a/spra163a.pdf
+// the segment (chord) is the position of the highest set bit, so counting leading zeros gives it
+// directly, without the linear to A-law table on page 16. the application note does the same with
+// the EXP instruction, which "allows the extraction of the most significant bits without requiring
+// a look-up table" (page 18), and determines the A-law chord that way on page 23
 // see also https://en.wikipedia.org/wiki/G.711#A-law
 
 /// Encodes a linear 16-bit signed integer sample value to a 8-bit encoded G.711 A-law value.
@@ -60,24 +64,18 @@ pub fn encode_alaw(linear: i16) -> u8 {
     };
     #[allow(clippy::cast_sign_loss)] // sign loss is expected and handled after the cast to u16
     let linear = (linear >> 3) as u16;
-    let inputval = if sign == 0x80 {
+    let inputval = u32::from(if sign == 0x80 {
         // make a positive value using 1s' complement (a tip from wikipedia)
         linear ^ 0xffff
     } else {
         linear
-    };
-    let compressed_code_word: u16 = match inputval {
-        #[allow(clippy::identity_op)]
-        0b000000000000..=0b000000011111 => 0b000_0000 | (inputval & 0b000000011110) >> 1,
-        0b000000100000..=0b000000111111 => 0b001_0000 | (inputval & 0b000000011110) >> 1,
-        0b000001000000..=0b000001111111 => 0b010_0000 | (inputval & 0b000000111100) >> 2,
-        0b000010000000..=0b000011111111 => 0b011_0000 | (inputval & 0b000001111000) >> 3,
-        0b000100000000..=0b000111111111 => 0b100_0000 | (inputval & 0b000011110000) >> 4,
-        0b001000000000..=0b001111111111 => 0b101_0000 | (inputval & 0b000111100000) >> 5,
-        0b010000000000..=0b011111111111 => 0b110_0000 | (inputval & 0b001111000000) >> 6,
-        0b100000000000..=0b111111111111 => 0b111_0000 | (inputval & 0b011110000000) >> 7,
-        4096.. => 0b111_1111
-    };
+    });
+    // the number of bits inputval has beyond the first segment, which ends at 0b000000011111.
+    // inputval never needs more than 12 bits, so the segment is always 0..=7
+    let segment = (u32::BITS - inputval.leading_zeros()).saturating_sub(5);
+    // segments 0 and 1 have the same step size, so they use the same shift
+    let shift = if segment < 2 { 1 } else { segment };
+    let compressed_code_word: u32 = (segment << 4) | ((inputval >> shift) & 0b1111);
     #[allow(clippy::cast_possible_truncation)] // compressed_code_word is always less than 255
     let result = (sign | compressed_code_word as u8) ^ 0xd5;
     result
