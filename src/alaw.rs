@@ -71,8 +71,10 @@ pub fn encode_alaw(linear: i16) -> u8 {
         linear
     });
     // the number of bits inputval has beyond the first segment, which ends at 0b000000011111.
+    // the or never moves the highest set bit, but it makes inputval nonzero and at least 5 bits
+    // long, so that the bit count needs no zero check and the subtraction cannot underflow.
     // inputval never needs more than 12 bits, so the segment is always 0..=7
-    let segment = (u32::BITS - inputval.leading_zeros()).saturating_sub(5);
+    let segment = (u32::BITS - (inputval | 0b11111).leading_zeros()) - 5;
     // segments 0 and 1 have the same step size, so they use the same shift
     let shift = if segment < 2 { 1 } else { segment };
     let compressed_code_word: u32 = (segment << 4) | ((inputval >> shift) & 0b1111);
