@@ -1,4 +1,4 @@
-# Cross-platform tests for 64-bit little-endian x86_64 and 
+# Cross-platform tests for 64-bit little-endian x86_64 and
 # 32-bit big-endian PowerPC.
 name: Cross-platform tests
 
@@ -20,11 +20,11 @@ jobs:
           - powerpc-unknown-linux-gnu
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Update Rust
-        run: rustup update stable
+      - uses: actions/checkout@v6
+      - name: Switch to MSRV
+        run: rustup install 1.87.0 && rustup default 1.87.0
       - name: Install cross-compilation tools
-        uses: taiki-e/setup-cross-toolchain-action@v1.20.0
+        uses: taiki-e/setup-cross-toolchain-action@v1
         with:
           target: ${{ matrix.target }}
       - run: cargo test --verbose

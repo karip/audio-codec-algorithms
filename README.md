@@ -40,7 +40,7 @@ Performance testing:
     cargo bench
 
 There is a GitHub Action called "Cross-platform tests" (cross-test.yml), which automatically
-runs `cargo test` for little-endian 64-bit x64_86 and big-endian 32-bit PowerPC. The badge
+runs `cargo test` for little-endian 64-bit x86_64 and big-endian 32-bit PowerPC. The badge
 below shows the status if the GitHub Action has been run recently.
 
 [![Cross-platform tests](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml/badge.svg)](https://github.com/karip/audio-codec-algorithms/actions/workflows/cross-test.yml)
