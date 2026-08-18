@@ -46,7 +46,11 @@ pub fn decode_ulaw(encoded: u8) -> i16 {
 }
 
 // encoding algorithm is based on "A-Law and mu-Law Companding Implementations Using the TMS320C54x,
-// Application Note: SPRA163A", page 13: https://www.ti.com/lit/an/spra163a/spra163a.pdf
+// Application Note: SPRA163A", pages 18 and 20: https://www.ti.com/lit/an/spra163a/spra163a.pdf
+// the segment (chord) is the position of the highest set bit, so counting leading zeros gives it
+// directly, without the binary encoding table on page 13. the application note does the same with
+// the EXP instruction, which "allows the extraction of the most significant bits without requiring
+// a look-up table" (page 18), giving mchd = (0x19 - T|EXP) << 4 on page 20
 // see also https://en.wikipedia.org/wiki/G.711#μ-law
 
 /// Encodes a linear 16-bit signed integer sample value to a 8-bit encoded G.711 μ-law value.
@@ -60,24 +64,20 @@ pub fn encode_ulaw(linear: i16) -> u8 {
     };
     #[allow(clippy::cast_sign_loss)] // sign loss is expected and handled after the cast to u16
     let linear = (linear >> 2) as u16;
-    let absval = if sign == 0x80 {
+    let absval = u32::from(if sign == 0x80 {
         // make a positive value using 1s' complement (a tip from wikipedia)
         linear ^ 0xffff
     } else {
         linear
-    };
+    });
     let inputval = absval + 33;
-    let compressed_code_word = match inputval {
-        #[allow(clippy::identity_op)]
-        0b0000000000000..=0b0000000111111 => 0b000_0000 | (inputval & 0b0000000011110) >> 1,
-        0b0000001000000..=0b0000001111111 => 0b001_0000 | (inputval & 0b0000000111100) >> 2,
-        0b0000010000000..=0b0000011111111 => 0b010_0000 | (inputval & 0b0000001111000) >> 3,
-        0b0000100000000..=0b0000111111111 => 0b011_0000 | (inputval & 0b0000011110000) >> 4,
-        0b0001000000000..=0b0001111111111 => 0b100_0000 | (inputval & 0b0000111100000) >> 5,
-        0b0010000000000..=0b0011111111111 => 0b101_0000 | (inputval & 0b0001111000000) >> 6,
-        0b0100000000000..=0b0111111111111 => 0b110_0000 | (inputval & 0b0011110000000) >> 7,
-        0b1000000000000..=0b1111111111111 => 0b111_0000 | (inputval & 0b0111100000000) >> 8,
-        8192.. => 0b111_1111
+    // the number of bits inputval has beyond the first segment, which ends at 0b0000000111111
+    let segment = (u32::BITS - inputval.leading_zeros()).saturating_sub(6);
+    let compressed_code_word: u32 = if segment >= 8 {
+        // inputval is past the last segment
+        0b111_1111
+    } else {
+        (segment << 4) | ((inputval >> (segment + 1)) & 0b1111)
     };
     #[allow(clippy::cast_possible_truncation)] // compressed_code_word is always less than 255
     let result = (sign | compressed_code_word as u8) ^ 0xff;
