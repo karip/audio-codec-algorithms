@@ -1,6 +1,6 @@
 [package]
 name = "audio-codec-algorithms"
-version = "0.8.0"
+version = "0.8.1"
 description = "Audio codec algorithms: A-law, μ-law and IMA ADPCM"
 repository = "https://github.com/karip/audio-codec-algorithms"
 license = "0BSD OR Apache-2.0"
@@ -10,7 +10,7 @@ edition = "2024"
 rust-version = "1.87.0"
 
 [dependencies]
-no-panic = { version = "0.1.36", optional = true }
+no-panic = { version = "0.1.37", optional = true }
 
 [features]
 internal-no-panic = ["dep:no-panic"] # no-panic check is only for testing
